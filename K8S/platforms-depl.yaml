@@ -1,0 +1,35 @@
+apiversion: apps/v1
+kind: Deployment
+metadata: 
+  name: platforms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: platfromservice
+  template:
+    metadata:
+      labels:
+        app: platfromservice
+    spec:
+      containers:
+        - name: platfromservice
+          image: manimaniad/platformservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: platforms-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: platformservice
+  ports: 
+  - name: platformservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: platformgrpc
+    protocol: TCP
+    port: 666
+    targetPort: 666
